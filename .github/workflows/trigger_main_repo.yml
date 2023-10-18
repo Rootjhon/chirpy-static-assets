@@ -1,0 +1,20 @@
+name: "Trigger Main Repository"
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  trigger_main_repo:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Trigger repository_dispatch event
+      run: |
+        curl -XPOST -u "${{ secrets.MAIN_REPO_USERNAME }}:${{ secrets.MAIN_REPO_TOKEN }}" \
+        -H "Accept: application/vnd.github.everest-preview+json" \
+        -H "Content-Type: application/json" \
+        --data '{"event_type": "submodule_updated"}' \
+        https://api.github.com/repos/Rootjhon/rootjhon.github.io/dispatches
